@@ -102,7 +102,7 @@ export default function Home() {
   // Prevent blank submissions and allow for multiline input
   const handleEnter = (e: any) => {
     if (e.key === "Enter" && userInput) {
-      if(!e.shiftKey && userInput) {
+      if (!e.shiftKey && userInput) {
         handleSubmit(e);
       }
     } else if (e.key === "Enter") {
@@ -136,11 +136,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <h1 className="text-3xl font-bold underline">
+        Hello world!
+      </h1>
       <div className={styles.topnav}>
         <div>
           <Link href="/"><h1 className={styles.navlogo}>Almanac of Naval Ravikant: Chatbot</h1></Link>
         </div>
-        <div className = {styles.navlinks}>
+        <div className={styles.navlinks}>
           <a
             href="https://www.navalmanack.com/"
             target="_blank"
@@ -176,17 +179,17 @@ export default function Home() {
                   : styles.usermessage;
               }
               return (
-                  <div key={index} className={className}>
-                    {icon}
-                    <div className={styles.markdownanswer}>
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        linkTarget="_blank"
-                      >
-                        {message.message}
-                      </ReactMarkdown>
-                    </div>
+                <div key={index} className={className}>
+                  {icon}
+                  <div className={styles.markdownanswer}>
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      linkTarget="_blank"
+                    >
+                      {message.message}
+                    </ReactMarkdown>
                   </div>
+                </div>
               )
             })}
           </div>
@@ -194,28 +197,28 @@ export default function Home() {
         <div className={styles.center}>
           <div className={styles.cloudform}>
             <form onSubmit={handleSubmit}>
-              <textarea 
+              <textarea
                 disabled={loading}
                 onKeyDown={handleEnter}
                 ref={textAreaRef}
                 autoFocus={false}
                 rows={1}
                 maxLength={512}
-                id="userInput" 
-                name="userInput" 
-                placeholder={loading? "Waiting for response..." : "Type your question..."}  
-                value={userInput} 
-                onChange={e => setUserInput(e.target.value)} 
+                id="userInput"
+                name="userInput"
+                placeholder={loading ? "Waiting for response..." : "Type your question..."}
+                value={userInput}
+                onChange={e => setUserInput(e.target.value)}
                 className={styles.textarea}
               />
-              <button 
-                type="submit" 
-                disabled = {loading}
-                className = {styles.generatebutton}
+              <button
+                type="submit"
+                disabled={loading}
+                className={styles.generatebutton}
               >
                 {loading ? (
                   <div className={styles.loadingwheel}>
-                    <CircularProgress color="inherit" size={20}/>
+                    <CircularProgress color="inherit" size={20} />
                   </div>
                 ) : (
                   // Send icon SVG in input field
@@ -226,10 +229,10 @@ export default function Home() {
               </button>
             </form>
           </div>
-          <div className = {styles.footer}>
+          <div className={styles.footer}>
             <p> Built by <a href="https://twitter.com/progremir" target="_blank" rel="noreferrer">
-                Emir Amanbekov
-              </a>. Not affiliated with <a href="https://www.navalmanack.com/" target="_blank" rel="noreferrer">
+              Emir Amanbekov
+            </a>. Not affiliated with <a href="https://www.navalmanack.com/" target="_blank" rel="noreferrer">
                 Almanac of Naval Ravikant
               </a></p>
           </div>
