@@ -1,6 +1,6 @@
 import styles from '../styles/Home.module.css';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 
 type ChatInputBarProps = {
     handleSubmit: (e: any) => void;
@@ -12,6 +12,12 @@ type ChatInputBarProps = {
 
 const ChatInputBar: React.FC<ChatInputBarProps> = ({ handleSubmit, handleEnter, userInput, setUserInput, loading }) => {
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+    useEffect(() => {
+        if (!loading) {
+            textAreaRef.current?.focus();
+        }
+    }, [loading]);
 
     return (
         <form onSubmit={handleSubmit}>
