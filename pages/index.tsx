@@ -1,12 +1,11 @@
-import { useState, useRef, useEffect, useMemo } from 'react'
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import Image from 'next/image';
-import Link from 'next/link';
-import ReactMarkdown from 'react-markdown';
-import CircularProgress from '@mui/material/CircularProgress';
+import ChatBox from '@/components/ChatBox';
+import ChatInputBar from '@/components/ChatInputBar';
+import Footer from '@/components/Footer';
+import HeadTag from '@/components/HeadTag';
+import NavBar from '@/components/NavBar';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
-import remarkGfm from "remark-gfm";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import styles from '../styles/Home.module.css';
 
 type Message = {
   type: "apiMessage" | "userMessage";
@@ -114,128 +113,26 @@ export default function Home() {
     return [...messages, ...(pending ? [{ type: "apiMessage", message: pending }] : [])];
   }, [messages, pending]);
 
+
   return (
     <>
-      <Head>
-        {/* <!-- Primary Meta Tags --> */}
-        <title>Almanac of Naval Ravikant: Chatbot</title>
-        <meta name="title" content="Almanac of Naval Ravikant: Chatbot" />
-        <meta name="description" content="Learn from one of the greatest thinkers of our time. Get access to Naval's wisdom and insights on wealth, happiness, and success." />
-
-        {/* <!-- Open Graph / Facebook --> */}
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Almanac of Naval Ravikant: Chatbot" />
-        <meta property="og:description" content="Learn from one of the greatest thinkers of our time. Get access to Naval's wisdom and insights on wealth, happiness, and success." />
-        <meta property="og:image" content="https://navalmanac.progremir.dev/og-image.svg" />
-
-        {/* <!-- Twitter --> */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:title" content="Almanac of Naval Ravikant: Chatbot" />
-        <meta property="twitter:description" content="Learn from one of the greatest thinkers of our time. Get access to Naval's wisdom and insights on wealth, happiness, and success." />
-        <meta property="twitter:image" content="https://navalmanac.progremir.dev/og-image.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-      <div className={styles.topnav}>
-        <div>
-          <Link href="/"><h1 className={styles.navlogo}>Almanac of Naval Ravikant: Chatbot</h1></Link>
-        </div>
-        <div className={styles.navlinks}>
-          <a
-            href="https://www.navalmanack.com/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Book
-          </a>
-          <a
-            href="https://github.com/progremir/navalmanac"
-            target="_blank"
-            rel="noreferrer"
-          >
-            GitHub
-          </a>
-        </div>
-      </div>
+      <HeadTag />
+      <NavBar />
       <main className={styles.main}>
         <div className={styles.cloud}>
-          <div ref={messageListRef} className={styles.messagelist}>
-            {chatMessages.map((message, index) => {
-              let icon;
-              let className;
-
-              if (message.type === "apiMessage") {
-                icon = <Image src="/chatIcon.png" alt="AI" width="30" height="30" className={styles.boticon} priority />;
-                className = styles.apimessage;
-              } else {
-                icon = <Image src="/usericon.png" alt="Me" width="30" height="30" className={styles.usericon} priority />
-
-                // The latest message sent by the user will be animated while waiting for a response
-                className = loading && index === chatMessages.length - 1
-                  ? styles.usermessagewaiting
-                  : styles.usermessage;
-              }
-              return (
-                <div key={index} className={className}>
-                  {icon}
-                  <div className={styles.markdownanswer}>
-                    <ReactMarkdown
-                      remarkPlugins={[remarkGfm]}
-                      linkTarget="_blank"
-                    >
-                      {message.message}
-                    </ReactMarkdown>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
+          <ChatBox chatMessages={chatMessages} loading={loading} />
         </div>
         <div className={styles.center}>
           <div className={styles.cloudform}>
-            <form onSubmit={handleSubmit}>
-              <textarea
-                disabled={loading}
-                onKeyDown={handleEnter}
-                ref={textAreaRef}
-                autoFocus={false}
-                rows={1}
-                maxLength={512}
-                id="userInput"
-                name="userInput"
-                placeholder={loading ? "Waiting for response..." : "Type your question..."}
-                value={userInput}
-                onChange={e => setUserInput(e.target.value)}
-                className={styles.textarea}
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className={styles.generatebutton}
-              >
-                {loading ? (
-                  <div className={styles.loadingwheel}>
-                    <CircularProgress color="inherit" size={20} />
-                  </div>
-                ) : (
-                  // Send icon SVG in input field
-                  <svg viewBox='0 0 20 20' className={styles.svgicon} xmlns='http://www.w3.org/2000/svg'>
-                    <path d='M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z'></path>
-                  </svg>
-                )}
-              </button>
-            </form>
+            <ChatInputBar
+              handleSubmit={handleSubmit}
+              handleEnter={handleEnter}
+              userInput={userInput}
+              setUserInput={setUserInput}
+              loading={loading}
+            />
           </div>
-          <div className={styles.footer}>
-            <p> Built by <a href="https://twitter.com/progremir" target="_blank" rel="noreferrer">
-              Emir Amanbekov
-            </a>. Not affiliated with <a href="https://www.navalmanack.com/" target="_blank" rel="noreferrer">
-                Almanac of Naval Ravikant
-              </a></p>
-          </div>
+          <Footer />
         </div>
       </main>
     </>
