@@ -4,18 +4,11 @@ import Link from 'next/link';
 const NavBar = () => (
     <div className={styles.topnav}>
         <div>
-            <Link href="/"><h1 className={styles.navlogo}>Almanac of Naval Ravikant: Chatbot</h1></Link>
+            <Link href="/"><h1 className={styles.navlogo}>Repo Chat</h1></Link>
         </div>
         <div className={styles.navlinks}>
             <a
-                href="https://www.navalmanack.com/"
-                target="_blank"
-                rel="noreferrer"
-            >
-                Book
-            </a>
-            <a
-                href="https://github.com/progremir/navalmanac"
+                href="https://github.com/0xNeon-opensource/gh-repo-chat"
                 target="_blank"
                 rel="noreferrer"
             >
